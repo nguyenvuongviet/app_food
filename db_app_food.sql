@@ -4,81 +4,139 @@ USE `app_food`;
 
 -- Tạo bảng user
 CREATE TABLE `user` (
-    `user_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    
     `full_name` VARCHAR(255),
     `email` VARCHAR(255),
-    `password` VARCHAR(255)
+    `password` VARCHAR(255),
+    
+    `deletedBy` INT NOT NULL DEFAULT 0,
+	`isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`deletedAt` TIMESTAMP NULL DEFAULT NULL,
+	`createAt`	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updateAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Tạo bảng restaurant
 CREATE TABLE `restaurant` (
-    `res_id` INT PRIMARY KEY AUTO_INCREMENT,
-    `res_name` VARCHAR(255),
+    `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    
+    `name` VARCHAR(255),
     `image` VARCHAR(255),
-    `desc` VARCHAR(255)
+    `desc` VARCHAR(255),
+    
+    `deletedBy` INT NOT NULL DEFAULT 0,
+	`isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`deletedAt` TIMESTAMP NULL DEFAULT NULL,
+	`createAt`	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updateAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Tạo bảng food_type
 CREATE TABLE `food_type` (
-    `type_id` INT PRIMARY KEY AUTO_INCREMENT,
-    `type_name` VARCHAR(255)
+   	`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+     
+    `name` VARCHAR(255),
+    
+    `deletedBy` INT NOT NULL DEFAULT 0,
+	`isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`deletedAt` TIMESTAMP NULL DEFAULT NULL,
+	`createAt`	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updateAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Tạo bảng food
 CREATE TABLE `food` (
-    `food_id` INT PRIMARY KEY AUTO_INCREMENT,
-    `food_name` VARCHAR(255),
+`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+
+    `name` VARCHAR(255),
     `image` VARCHAR(255),
     `price` FLOAT,
     `desc` VARCHAR(255),
     `type_id` INT,
-    FOREIGN KEY (`type_id`) REFERENCES `food_type`(`type_id`)
+    FOREIGN KEY (`type_id`) REFERENCES `food_type`(`id`),
+    
+   	`deletedBy` INT NOT NULL DEFAULT 0,
+	`isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`deletedAt` TIMESTAMP NULL DEFAULT NULL,
+	`createAt`	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updateAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Tạo bảng sub_food
 CREATE TABLE `sub_food` (
-    `sub_id` INT PRIMARY KEY AUTO_INCREMENT,
-    `sub_name` VARCHAR(255),
-    `sub_price` FLOAT,
+ 	`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	
+    `name` VARCHAR(255),
+    `price` FLOAT,
     `food_id` INT,
-    FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`)
+    FOREIGN KEY (`food_id`) REFERENCES `food`(`id`),
+    
+    `deletedBy` INT NOT NULL DEFAULT 0,
+	`isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`deletedAt` TIMESTAMP NULL DEFAULT NULL,
+	`createAt`	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updateAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Tạo bảng order
 CREATE TABLE `order` (
-    `order_id` INT PRIMARY KEY AUTO_INCREMENT,
+	`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+
     `user_id` INT,
     `food_id` INT,
     `amount` INT,
     `code` VARCHAR(255),
     `arr_sub_id` VARCHAR(255),
-    FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`),
-    FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`)
+    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
+    FOREIGN KEY (`food_id`) REFERENCES `food`(`id`),
+    
+    `deletedBy` INT NOT NULL DEFAULT 0,
+	`isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`deletedAt` TIMESTAMP NULL DEFAULT NULL,
+	`createAt`	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updateAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Tạo bảng like_res
 CREATE TABLE `like_res` (
-    `user_id` INT,
+ 	`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+
+	`user_id` INT,
     `res_id` INT,
     `date_like` DATETIME,
-    FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`),
-    FOREIGN KEY (`res_id`) REFERENCES `restaurant`(`res_id`)
+    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
+    FOREIGN KEY (`res_id`) REFERENCES `restaurant`(`id`),
+    
+   	`deletedBy` INT NOT NULL DEFAULT 0,
+	`isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`deletedAt` TIMESTAMP NULL DEFAULT NULL,
+	`createAt`	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updateAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Tạo bảng rate_res
 CREATE TABLE `rate_res` (
+ 	`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+
     `user_id` INT,
     `res_id` INT,
     `amount` INT,
     `date_rate` DATETIME,
-    FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`),
-    FOREIGN KEY (`res_id`) REFERENCES `restaurant`(`res_id`)
+    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
+    FOREIGN KEY (`res_id`) REFERENCES `restaurant`(`id`),
+    
+	`deletedBy` INT NOT NULL DEFAULT 0,
+	`isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`deletedAt` TIMESTAMP NULL DEFAULT NULL,
+	`createAt`	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updateAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Chèn dữ liệu mẫu
-INSERT INTO `food_type` (`type_name`) VALUES ('Fast Food'), ('Beverage'), ('Dessert');
+INSERT INTO `food_type` (`name`) VALUES ('Fast Food'), ('Beverage'), ('Dessert');
 
-INSERT INTO `food` (`food_name`, `image`, `price`, `desc`, `type_id`) VALUES 
+INSERT INTO `food` (`name`, `image`, `price`, `desc`, `type_id`) VALUES 
 ('Burger', 'burger.jpg', 5.99, 'Delicious burger', 1),
 ('Pizza', 'pizza.jpg', 8.99, 'Cheesy pizza', 1),
 ('Coke', 'coke.jpg', 1.99, 'Refreshing drink', 2),
@@ -92,7 +150,7 @@ INSERT INTO `user` (`full_name`, `email`, `password`) VALUES
 ('Hoang Van E', 'e@gmail.com', 'letmein'),
 ('Vo Van F', 'f@gmail.com', '123abc');
 
-INSERT INTO `restaurant` (`res_name`, `image`, `desc`) VALUES 
+INSERT INTO `restaurant` (`name`, `image`, `desc`) VALUES 
 ('Nha Hang 1', 'image1.jpg', 'Mo ta nha hang 1'),
 ('Nha Hang 2', 'image2.jpg', 'Mo ta nha hang 2'),
 ('Nha Hang 3', 'image3.jpg', 'Mo ta nha hang 3');
@@ -140,9 +198,9 @@ ORDER BY `order_count` DESC
 LIMIT 1;
 
 -- Tìm người dùng không hoạt động
-SELECT u.`user_id`, u.`full_name` 
+SELECT u.`id`, u.`full_name` 
 FROM `user` u 
-LEFT JOIN `order` o ON u.`user_id` = o.`user_id` 
-LEFT JOIN `like_res` l ON u.`user_id` = l.`user_id` 
-LEFT JOIN `rate_res` r ON u.`user_id` = r.`user_id` 
+LEFT JOIN `order` o ON u.`id` = o.`user_id` 
+LEFT JOIN `like_res` l ON u.`id` = l.`user_id` 
+LEFT JOIN `rate_res` r ON u.`id` = r.`user_id` 
 WHERE o.`user_id` IS NULL AND l.`user_id` IS NULL AND r.`user_id` IS NULL;
