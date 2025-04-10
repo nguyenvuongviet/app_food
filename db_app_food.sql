@@ -1,3 +1,21 @@
+-- database
+CREATE DATABASE IF NOT EXISTS `TEMPLATE`; -- tạo database
+DROP DATABASE `TEMPLATE`; -- xoá database
+USE `TEMPLATE`;
+
+-- table template
+CREATE TABLE `TABLE_TEMPLATE` (
+	`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT, -- mặc định luôn luôn có
+	
+	
+	-- mặc định luôn luôn có
+	`deletedBy` INT NOT NULL DEFAULT 0,
+	`isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
+	`deletedAt` TIMESTAMP NULL DEFAULT NULL,
+	`createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 -- Tạo database
 CREATE DATABASE `app_food`;
 USE `app_food`;
